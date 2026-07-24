@@ -10,4 +10,13 @@ const msalConfig = {
 
 export const msalInstance = new PublicClientApplication(msalConfig);
 
-console.log("MSAL initialized.");
+
+await msalInstance.initialize();
+
+export const loginRequest = {
+    scopes: [
+        "openid",
+        "profile",
+        "email"
+    ]
+};

@@ -1,7 +1,14 @@
-import { msalInstance } from "./auth.js";
+import { msalInstance, loginRequest } from "./auth.js";
 
-const output = document.getElementById("output");
+const loginBtn = document.getElementById("loginBtn");
 
-output.textContent = "JavaScript loaded successfully.";
+loginBtn.addEventListener("click", async () => {
 
-console.log(msalInstance);
+    try {
+        await msalInstance.loginRedirect(loginRequest);
+    }
+    catch (err) {
+        console.error(err);
+    }
+
+});
