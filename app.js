@@ -1,4 +1,4 @@
-import { msalInstance } from "./auth.js";
+import { msalInstance } from "auth.js";
 
 const output = document.getElementById("output");
 
