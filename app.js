@@ -22,22 +22,39 @@ async function initialize() {
     }
 }
 
-function displayAccount(account) {
-    const claims = account.idTokenClaims || {};
+async function displayAccount(account) {
+
+    const tokenResponse = await msalInstance.acquireTokenSilent({
+        account,
+        scopes: ["openid", "profile", "email"]
+    });
+
+    const claims = tokenResponse.idTokenClaims;
 
     output.textContent = `
-Display Name: ${account.name ?? "N/A"}
+Display Name:
+${account.name}
 
-Username: ${account.username}
+Username:
+${account.username}
 
-Home Account ID:
-${account.homeAccountId}
-
-Home Tenant ID:
+Home Tenant:
 ${account.homeAccountId.split(".")[1]}
 
-Issuing Tenant ID:
-${claims.tid ?? "N/A"}
+Issuing Tenant:
+${claims.tid}
+
+Subject:
+${claims.sub}
+
+Object ID:
+${claims.oid}
+
+Issuer:
+${claims.iss}
+
+Audience:
+${claims.aud}
 `;
 }
 
