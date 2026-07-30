@@ -10,6 +10,23 @@ async function initialize() {
     if (response) {
         // Set the newly signed-in account as active
         msalInstance.setActiveAccount(response.account);
+
+        const result = await fetch(
+            "https://hojlmrrgkqvchqyggmbb.supabase.co",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    token: response.idToken,
+                }),
+            }
+        );
+
+        const data = await result.json();
+
+        console.log("Edge Function response:", data);
     }
 
     // If we already have an account, use it
