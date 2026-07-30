@@ -12,7 +12,7 @@ async function initialize() {
         msalInstance.setActiveAccount(response.account);
 
         const result = await fetch(
-            "https://hojlmrrgkqvchqyggmbb.supabase.co",
+            "https://hojlmrrgkqvchqyggmbb.supabase.co/functions/v1/authorize-user",
             {
                 method: "POST",
                 headers: {
