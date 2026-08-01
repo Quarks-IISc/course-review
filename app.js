@@ -26,6 +26,20 @@ async function initialize() {
 
         const data = await result.json();
 
+        console.log("Authorization result:", data);
+
+        if (!result.ok) {
+            document.getElementById("status").textContent =
+                "Authentication failed. Please try again later.";
+            return;
+        }
+
+        if (data.authorized) {
+            showProtectedContent();
+        } else {
+            showAccessDenied();
+        }
+
         console.log("Edge Function response:", data);
     }
 
