@@ -3,6 +3,7 @@ import { msalInstance, loginRequest } from "./auth.js";
 const loginBtn = document.getElementById("loginBtn");
 const output = document.getElementById("output");
 
+
 async function initialize() {
     // Process the redirect response (if we just came back from Microsoft)
     const response = await msalInstance.handleRedirectPromise();
