@@ -75,6 +75,17 @@ ${claims.aud}
 `;
 }
 
+function showProtectedContent() {
+    document.getElementById("status").textContent = "";
+    document.getElementById("protected-content").hidden = false;
+}
+
+function showAccessDenied() {
+    document.getElementById("status").textContent =
+        "Access denied. Your account is not authorized to view this site.";
+    document.getElementById("protected-content").hidden = true;
+}
+
 loginBtn.addEventListener("click", async () => {
     await msalInstance.loginRedirect(loginRequest);
 });
