@@ -3,7 +3,6 @@ import { msalInstance, loginRequest } from "./auth.js";
 const loginBtn = document.getElementById("loginBtn");
 const output = document.getElementById("output");
 
-
 async function initialize() {
     // Process the redirect response (if we just came back from Microsoft)
     const response = await msalInstance.handleRedirectPromise();
@@ -12,22 +11,7 @@ async function initialize() {
         // Set the newly signed-in account as active
         msalInstance.setActiveAccount(response.account);
 
-        const result = await fetch(
-            "https://hojlmrrgkqvchqyggmbb.supabase.co/functions/v1/authorize-user",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    token: response.idToken,
-                }),
-            }
-        );
-
-        const data = await result.json();
-
-        console.log("Authorization result:", data);
+        await authorizeUser(response.idToken);
 
         if (!result.ok) {
             document.getElementById("status").textContent =
@@ -54,12 +38,45 @@ async function initialize() {
     }
 }
 
+async function authorizeUser(idToken) {
+    const result = await fetch(
+        "https://hojlmrrgkqvchqyggmbb.supabase.co/functions/v1/authorize-user",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                token: idToken,
+            }),
+        }
+    );
+
+    const data = await result.json();
+
+    console.log("Authorization result:", data);
+
+    if (!result.ok) {
+        document.getElementById("status").textContent =
+            "Authentication failed. Please try again later.";
+        return;
+    }
+
+    if (data.authorized) {
+        showProtectedContent();
+    } else {
+        showAccessDenied();
+    }
+}
+
 async function displayAccount(account) {
 
     const tokenResponse = await msalInstance.acquireTokenSilent({
         account,
         scopes: ["openid", "profile", "email"]
     });
+
+    await authorizeUser(tokenResponse.idToken);
 
     const claims = tokenResponse.idTokenClaims;
 
