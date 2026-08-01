@@ -69,7 +69,8 @@ ${account.name}
 
 Username:
 ${account.username}
-
+`
+/*
 Home Tenant:
 ${account.homeAccountId.split(".")[1]}
 
@@ -88,6 +89,7 @@ ${claims.iss}
 Audience:
 ${claims.aud}
 `;
+*/
 }
 
 function showProtectedContent() {
