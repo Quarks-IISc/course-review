@@ -4,25 +4,37 @@ const loginBtn = document.getElementById("loginBtn");
 const output = document.getElementById("output");
 
 async function initialize() {
-    // Process the redirect response (if we just came back from Microsoft)
+    // Process redirect response (if we just came back from Microsoft)
     const response = await msalInstance.handleRedirectPromise();
 
     if (response) {
-        // Set the newly signed-in account as active
         msalInstance.setActiveAccount(response.account);
-
-        // Authorize the newly signed-in user
-        await authorizeUser(response.idToken);
     }
 
-    // If we already have an account, use it
     const account =
         msalInstance.getActiveAccount() ??
         msalInstance.getAllAccounts()[0];
 
-    if (account) {
-        displayAccount(account);
+    if (!account) {
+        document.getElementById("status").textContent =
+            "Please sign in.";
+        return;
     }
+
+    // If we already have a fresh ID token from the redirect,
+    // reuse it. Otherwise silently obtain one.
+    const idToken = response
+        ? response.idToken
+        : (
+            await msalInstance.acquireTokenSilent({
+                account,
+                scopes: ["openid", "profile", "email"],
+            })
+        ).idToken;
+
+    await authorizeUser(idToken);
+
+    displayAccount(account);
 }
 
 async function authorizeUser(idToken) {
@@ -57,16 +69,6 @@ async function authorizeUser(idToken) {
 }
 
 async function displayAccount(account) {
-
-    const tokenResponse = await msalInstance.acquireTokenSilent({
-        account,
-        scopes: ["openid", "profile", "email"]
-    });
-
-    // Re-authorize the user every time the page loads
-    await authorizeUser(tokenResponse.idToken);
-
-    const claims = tokenResponse.idTokenClaims;
 
     output.textContent = `
 Display Name:
