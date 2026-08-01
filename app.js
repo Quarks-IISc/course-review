@@ -11,21 +11,8 @@ async function initialize() {
         // Set the newly signed-in account as active
         msalInstance.setActiveAccount(response.account);
 
+        // Authorize the newly signed-in user
         await authorizeUser(response.idToken);
-
-        if (!result.ok) {
-            document.getElementById("status").textContent =
-                "Authentication failed. Please try again later.";
-            return;
-        }
-
-        if (data.authorized) {
-            showProtectedContent();
-        } else {
-            showAccessDenied();
-        }
-
-        console.log("Edge Function response:", data);
     }
 
     // If we already have an account, use it
@@ -76,6 +63,7 @@ async function displayAccount(account) {
         scopes: ["openid", "profile", "email"]
     });
 
+    // Re-authorize the user every time the page loads
     await authorizeUser(tokenResponse.idToken);
 
     const claims = tokenResponse.idTokenClaims;
@@ -86,7 +74,7 @@ ${account.name}
 
 Username:
 ${account.username}
-`
+`;
 /*
 Home Tenant:
 ${account.homeAccountId.split(".")[1]}
@@ -105,7 +93,6 @@ ${claims.iss}
 
 Audience:
 ${claims.aud}
-`;
 */
 }
 
