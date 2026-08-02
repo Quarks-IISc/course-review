@@ -43,8 +43,12 @@ async function initialize() {
 async function initializeProtectedContent(idToken) {
     showProtectedContent();
 
-    await loadCourses(idToken);
-    await loadProfessors(idToken);
+    const coursesLoaded = await loadCourses(idToken);
+    const professorLoaded = await loadProfessors(idToken);
+
+    if (!coursesLoaded || !professorLoaded){
+        return;
+    }
 
     document
         .getElementById("loadReviewsBtn")
@@ -98,7 +102,47 @@ async function loadCourses(idToken) {
 }
 
 async function loadProfessors(idToken) {
+    const result = await fetch(
+        `${FUNCTIONS_BASE_URL}/get-professors`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                token: idToken,
+            }),
+        }
+    );
 
+    const data = await result.json();
+
+    if (!result.ok) {
+        document.getElementById("status").textContent =
+            "Failed to load professors.";
+        return false;
+    }
+
+    if (!data.authorized) {
+        showAccessDenied();
+        return false;
+    }
+
+    const select = document.getElementById("professorSelect");
+
+    select.innerHTML =
+        `<option value="">All Professors</option>`;
+
+    for (const professor of data.professors) {
+        const option = document.createElement("option");
+
+        option.value = professor.id;
+        option.textContent = professor.name;
+
+        select.appendChild(option);
+    }
+
+    return true;
 }
 
 async function loadReviews(idToken) {
