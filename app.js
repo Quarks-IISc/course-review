@@ -148,11 +148,80 @@ async function loadProfessors(idToken) {
 }
 
 async function loadReviews(idToken) {
+    const courseId =
+        document.getElementById("courseSelect").value;
 
+    const professorId =
+        document.getElementById("professorSelect").value;
+
+    const result = await fetch(
+        `${FUNCTIONS_BASE_URL}/get-review`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                token: idToken,
+                courseId: courseId ? Number(courseId) : null,
+                professorId: professorId ? Number(professorId) : null,
+            }),
+        }
+    );
+
+    const data = await result.json();
+
+    if (!result.ok) {
+        document.getElementById("status").textContent =
+            "Failed to load reviews.";
+        return;
+    }
+
+    if (!data.authorized) {
+        showAccessDenied();
+        return;
+    }
+
+    renderReviews(data.reviews);
 }
 
 function renderReviews(reviews) {
+    const container = document.getElementById("reviews");
 
+    container.innerHTML = "";
+
+    if (reviews.length === 0) {
+        container.textContent = "No matching reviews found.";
+        return;
+    }
+
+    for (const review of reviews) {
+        const card = document.createElement("div");
+
+        card.className = "review-card";
+
+        card.innerHTML = `
+            <h3>${review.course}</h3>
+
+            <p><strong>Professor:</strong> ${review.professor}</p>
+            <p><strong>Year:</strong> ${review.year}</p>
+            <p><strong>Term:</strong> ${review.term}</p>
+
+            <p><strong>Course Review</strong></p>
+            <p>${review.courseReview}</p>
+
+            <p><strong>Professor Review</strong></p>
+            <p>${review.professorReview}</p>
+
+            <p>
+                Recommendation: ${review.recommendation}/5<br>
+                Difficulty: ${review.difficulty}/5<br>
+                Leniency: ${review.leniency}/5
+            </p>
+        `;
+
+        container.appendChild(card);
+    }
 }
 
 /*
