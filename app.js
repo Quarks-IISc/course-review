@@ -103,7 +103,7 @@ async function loadCourses(idToken) {
 
 async function loadProfessors(idToken) {
     const result = await fetch(
-        `${FUNCTIONS_BASE_URL}/get-professors`,
+        `${FUNCTIONS_BASE_URL}/get-professor`,
         {
             method: "POST",
             headers: {
