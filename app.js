@@ -47,6 +47,8 @@ async function authorizeUser(idToken) {
             },
             body: JSON.stringify({
                 token: idToken,
+                courseId: 786,
+                professorId: 456,
             }),
         }
     );
@@ -54,6 +56,7 @@ async function authorizeUser(idToken) {
     const data = await result.json();
 
     console.log("Authorization result:", data);
+    console.table(data.reviews);
 
     if (!result.ok) {
         document.getElementById("status").textContent =
