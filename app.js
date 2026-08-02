@@ -53,6 +53,7 @@ async function initializeProtectedContent(idToken) {
     document
         .getElementById("loadReviewsBtn")
         .addEventListener("click", () => {
+            console.log("Clicked!");
             loadReviews(idToken);
         });
 }
