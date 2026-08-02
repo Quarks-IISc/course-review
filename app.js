@@ -39,7 +39,7 @@ async function initialize() {
 
 async function authorizeUser(idToken) {
     const result = await fetch(
-        "https://hojlmrrgkqvchqyggmbb.supabase.co/functions/v1/get-courses",
+        "https://hojlmrrgkqvchqyggmbb.supabase.co/functions/v1/get-professor",
         {
             method: "POST",
             headers: {
