@@ -39,6 +39,7 @@ async function initialize() {
     displayAccount(account);
 }
 
+
 async function initializeProtectedContent(idToken) {
     showProtectedContent();
 
