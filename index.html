@@ -26,10 +26,33 @@ Not signed in.
     </div>
 
     <div id="protected-content" hidden>
-        <h1>My Website</h1>
 
-        <p>This is my protected content.</p>
+        <h2>Course Reviews</h2>
+
+        <div id="filters">
+
+            <label for="courseSelect">Course</label>
+            <select id="courseSelect">
+                <option value="">All Courses</option>
+            </select>
+
+            <label for="professorSelect">Professor</label>
+            <select id="professorSelect">
+                <option value="">All Professors</option>
+            </select>
+
+            <button id="loadReviewsBtn">
+                Load Reviews
+            </button>
+
+        </div>
+
+        <hr>
+
+        <div id="reviews">
+
+        </div>
+
     </div>
-
 </body>
 </html>

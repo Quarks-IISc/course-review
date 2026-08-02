@@ -1,5 +1,7 @@
 import { msalInstance, loginRequest } from "./auth.js";
 
+const FUNCTIONS_BASE_URL = "https://hojlmrrgkqvchqyggmbb.supabase.co/functions/v1";
+
 const loginBtn = document.getElementById("loginBtn");
 const output = document.getElementById("output");
 
@@ -32,12 +34,82 @@ async function initialize() {
             })
         ).idToken;
 
-    await authorizeUser(idToken);
+    await initializeProtectedContent(idToken);
 
     displayAccount(account);
 }
 
-async function authorizeUser(idToken) {
+async function initializeProtectedContent(idToken) {
+    showProtectedContent();
+
+    await loadCourses(idToken);
+    await loadProfessors(idToken);
+
+    document
+        .getElementById("loadReviewsBtn")
+        .addEventListener("click", () => {
+            loadReviews(idToken);
+        });
+}
+
+async function loadCourses(idToken) {
+    const result = await fetch(
+        `${FUNCTIONS_BASE_URL}/get-courses`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                token: idToken,
+            }),
+        }
+    );
+
+    const data = await result.json();
+
+    if (!result.ok) {
+        document.getElementById("status").textContent =
+            "Failed to load courses.";
+        return false;
+    }
+
+    if (!data.authorized) {
+        showAccessDenied();
+        return false;
+    }
+
+    const select = document.getElementById("courseSelect");
+
+    select.innerHTML =
+        `<option value="">All Courses</option>`;
+
+    for (const course of data.courses) {
+        const option = document.createElement("option");
+
+        option.value = course.id;
+        option.textContent = course.name;
+
+        select.appendChild(option);
+    }
+
+    return true;
+}
+
+async function loadProfessors(idToken) {
+
+}
+
+async function loadReviews(idToken) {
+
+}
+
+function renderReviews(reviews) {
+
+}
+
+/*
+async function initializeProtectedContent(idToken) {
     const result = await fetch(
         "https://hojlmrrgkqvchqyggmbb.supabase.co/functions/v1/get-review",
         {
@@ -70,6 +142,7 @@ async function authorizeUser(idToken) {
         showAccessDenied();
     }
 }
+*/
 
 async function displayAccount(account) {
 
