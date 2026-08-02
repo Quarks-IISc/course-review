@@ -48,7 +48,7 @@ async function initializeProtectedContent(idToken) {
 
     if (!coursesLoaded || !professorLoaded){
         return;
-    }
+    } 
 
     document
         .getElementById("loadReviewsBtn")
