@@ -133,6 +133,8 @@ async function loadProfessors(idToken) {
     select.innerHTML =
         `<option value="">All Professors</option>`;
 
+    console.log(data);
+
     for (const professor of data.professors) {
         const option = document.createElement("option");
 
