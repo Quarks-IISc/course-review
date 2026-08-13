@@ -3,72 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quarks Course Reviews</title>
+
+    <title>Quarks — Course Reviews</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <h1>Quarks Course Reviews</h1>
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="#" class="brand">QUARKS</a>
 
-    <button id="loginBtn">
-        Sign in with your IISc account (only for students)
-    </button>
+            <div class="header-label">
+                COURSE REVIEWS
+            </div>
+        </div>
+    </header>
 
-    <pre id="output">
-Not signed in.
-    </pre>
+
+    <main>
+
+        <section class="hero">
+            <p class="eyebrow">IISc Undergraduate Community</p>
+
+            <h1>
+                Course Reviews
+            </h1>
+
+            <p class="hero-description">
+                Explore what students have to say about the courses
+                and professors at IISc.
+            </p>
+
+            <div id="status" class="status">
+                Checking authentication...
+            </div>
+
+            <button id="loginBtn" class="login-button">
+                Sign in with your IISc account
+            </button>
+        </section>
+
+
+        <section id="protected-content" class="review-section" hidden>
+
+            <div class="section-heading">
+                <p class="eyebrow">Student Reviews</p>
+
+                <h2>
+                    Find a course
+                </h2>
+
+                <p>
+                    Search by course or professor to explore reviews
+                    from the IISc community.
+                </p>
+            </div>
+
+
+            <div id="filters" class="filters">
+
+                <!-- COURSE AUTOCOMPLETE -->
+
+                <div class="autocomplete-group">
+
+                    <label for="courseSearch">
+                        Course
+                    </label>
+
+                    <div class="autocomplete">
+                        <input
+                            id="courseSearch"
+                            type="text"
+                            placeholder="Search for a course..."
+                            autocomplete="off"
+                            spellcheck="false"
+                        >
+
+                        <div
+                            id="courseSuggestions"
+                            class="suggestions"
+                            hidden
+                        ></div>
+                    </div>
+
+                    <input
+                        id="courseSelect"
+                        type="hidden"
+                        value=""
+                    >
+
+                </div>
+
+
+                <!-- PROFESSOR AUTOCOMPLETE -->
+
+                <div class="autocomplete-group">
+
+                    <label for="professorSearch">
+                        Professor
+                    </label>
+
+                    <div class="autocomplete">
+
+                        <input
+                            id="professorSearch"
+                            type="text"
+                            placeholder="Search for a professor..."
+                            autocomplete="off"
+                            spellcheck="false"
+                        >
+
+                        <div
+                            id="professorSuggestions"
+                            class="suggestions"
+                            hidden
+                        ></div>
+
+                    </div>
+
+                    <input
+                        id="professorSelect"
+                        type="hidden"
+                        value=""
+                    >
+
+                </div>
+
+
+                <button id="loadReviewsBtn" class="load-button">
+                    View Reviews
+                    <span>→</span>
+                </button>
+
+            </div>
+
+
+            <div class="divider"></div>
+
+
+            <section class="reviews-section">
+
+                <div class="reviews-heading">
+                    <p class="eyebrow">From the community</p>
+                    <h2>Reviews</h2>
+                </div>
+
+                <div id="reviews"></div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        <span>QUARKS</span>
+        <span>IISc Undergraduate Magazine</span>
+    </footer>
+
 
     <script type="module" src="app.js"></script>
 
-    <div id="status">
-        Checking authentication...
-    </div>
-
-
-    <div id="protected-content" hidden>
-
-        <h2>Course Reviews</h2>
-
-        <div id="filters">
-            <!--
-            <input
-                id="courseSearch"
-                type="text"
-                placeholder="Search courses..."
-            >
-            -->
-
-            <label for="courseSelect">Course</label>
-            <select id="courseSelect">
-                <option value="">All Courses</option>
-            </select>
-
-            <!--
-            <input
-                id="professorSearch"
-                type="text"
-                placeholder="Search professors..."
-            >
-            -->
-            
-            <label for="professorSelect">Professor</label>
-            <select id="professorSelect">
-                <option value="">All Professors</option>
-            </select>
-
-            <button id="loadReviewsBtn">
-                Load Reviews
-            </button>
-
-        </div>
-
-        <hr>
-
-        <div id="reviews">
-
-        </div>
-
-    </div>
 </body>
 </html>
