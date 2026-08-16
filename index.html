@@ -5,29 +5,30 @@ permalink: /
 ---
 
 <section class="recent-posts">
-
   <div class="section-title section-hero-header">
     <h2><span>Course Reviews</span></h2>
   </div>
 
-  <p class="club-dek">Real reviews from IISc students, gated to IISc accounts only.</p>
+  <p class="club-dek">
+    Real reviews from IISc students for courses offered by Undergraduate and
+    other departments.
+  </p>
 
   <div id="login-panel" class="panel">
     <button id="loginBtn">
       <i class="fas fa-shield-alt"></i>
       Sign in with your IISc account
     </button>
-    <p class="login-note">Only students with an IISc Microsoft account can access reviews.</p>
+    <p class="login-note">
+      This is gated to IISc accounts only, since it isn't meant to be public
+      information. <span id="status"></span>
+    </p>
   </div>
 
   <pre id="output"></pre>
 
-  <div id="status"></div>
-
   <div id="protected-content" hidden>
-
     <div id="filters" class="panel">
-
       <label for="courseSearch">Course</label>
       <div class="autocomplete">
         <input
@@ -35,11 +36,11 @@ permalink: /
           type="text"
           placeholder="Search for a course..."
           autocomplete="off"
-        >
+        />
         <div id="courseSuggestions"></div>
       </div>
 
-      <input id="courseSelect" type="hidden" value="">
+      <input id="courseSelect" type="hidden" value="" />
 
       <label for="professorSearch">Professor</label>
       <div class="autocomplete">
@@ -48,31 +49,147 @@ permalink: /
           type="text"
           placeholder="Search for a professor..."
           autocomplete="off"
-        >
+        />
         <div id="professorSuggestions"></div>
       </div>
 
-      <input id="professorSelect" type="hidden" value="">
+      <input id="professorSelect" type="hidden" value="" />
 
       <button id="loadReviewsBtn">Load Reviews</button>
-
     </div>
 
     <div id="reviews"></div>
+  </div>
+</section>
 
+<!-- Featured Posts Section -->
+<section
+  class="featured-posts mt-5 pt-5 border-top fade-up-element"
+  id="featured-posts-section"
+>
+  <div class="section-title section-hero-header mb-4">
+    <h2 style="font-size: 2.2rem"><span>FEATURED</span></h2>
   </div>
 
+  <div class="carousel-container fade-up-element">
+    <!-- Left Arrow -->
+    <button
+      class="carousel-arrow left"
+      onclick="window.scroll_featured_posts_carousel('left')"
+      aria-label="Scroll Left"
+    >
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <div class="latest-carousel" id="featured-posts-carousel">
+      <div id="featured-carousel-track" class="carousel-track"></div>
+    </div>
+
+    <!-- Right Arrow -->
+    <button
+      class="carousel-arrow right"
+      onclick="window.scroll_featured_posts_carousel('right')"
+      aria-label="Scroll Right"
+    >
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+
+  <script src="{{ site.quarks_url }}/assets/js/carousel-logic.js"></script>
+  <script>
+    // Same carousel as crosswords.html on the blog, but this repo's own
+    // Jekyll build has no site.posts to loop over (no _posts collection
+    // here) — so the cards are fetched live from the blog's featured.json
+    // instead of being rendered server-side with Liquid.
+    (function () {
+      const QUARKS_URL = "{{ site.quarks_url }}";
+      const track = document.getElementById("featured-carousel-track");
+
+      function cardHTML(post) {
+        const url = QUARKS_URL + post.url;
+        const img = post.image ? QUARKS_URL + post.image : "";
+
+        if (post.is_picture) {
+          return `
+            <div class="card h-100 picture-card" style="border: none; border-radius: 8px; overflow: hidden; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.08); background: #000; min-height: 280px;">
+              <a href="${url}" style="display: block; width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+                <img class="img-fluid" src="${img}" alt="${post.title}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
+                <div class="picture-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%); padding: 30px 15px 15px; text-align: left;">
+                  <h2 class="card-title" style="font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 2px; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">${post.title}</h2>
+                  <div class="d-flex justify-content-between align-items-end">
+                    ${post.author ? `<p class="pictures-author" style="font-size: 0.85rem; color: #ddd; margin-bottom: 0; text-shadow: 0 1px 2px rgba(0,0,0,0.5);"><em>by ${post.author}</em></p>` : ""}
+                    <span class="post-date" style="font-size: 0.75rem; color: #bbb; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">${post.date}</span>
+                  </div>
+                </div>
+              </a>
+            </div>`;
+        }
+
+        return `
+          <div class="card h-100">
+            <div class="maxthumb">
+              <a href="${url}">
+                ${img ? `<img class="img-fluid" src="${img}" alt="${post.title}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">` : ""}
+              </a>
+            </div>
+            <div class="card-body">
+              <h2 class="card-title"><a class="text-dark" href="${url}">${post.title}</a></h2>
+              <h4 class="card-text">${post.excerpt || "No excerpt available."}</h4>
+            </div>
+            <div class="card-footer bg-white">
+              <div class="wrapfooter">
+                <div class="author-meta"><div class="post-name">${post.author || "Unknown Author"}</div></div>
+                <span class="post-date">${post.date}</span>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      fetch(`${QUARKS_URL}/featured.json`)
+        .then((res) => res.json())
+        .then((posts) => {
+          track.innerHTML = posts
+            .map((post) => `<div class="carousel-item-custom mb-30px">${cardHTML(post)}</div>`)
+            .join("");
+
+          if (typeof initCarousel === "function") {
+            initCarousel("featured-posts-carousel", "featured-carousel-track", {
+              autoScroll: true,
+              scrollSpeed: 1,
+              scrollAmount: 320,
+            });
+          }
+        })
+        .catch((err) => console.error("Failed to load featured posts:", err));
+    })();
+  </script>
 </section>
 
 <script type="module" src="{{ site.baseurl }}/app.js"></script>
 <script>
-  // app.js only toggles `hidden` on #protected-content, with no class hook,
-  // so hide the sign-in panel ourselves once it's unhidden.
-  document.addEventListener('DOMContentLoaded', () => {
-    const loginPanel = document.getElementById('login-panel');
-    const protectedContent = document.getElementById('protected-content');
-    new MutationObserver(() => {
-      loginPanel.hidden = !protectedContent.hidden;
-    }).observe(protectedContent, { attributes: true, attributeFilter: ['hidden'] });
+  // app.js only toggles `hidden` on #protected-content and writes status
+  // text (sign-in prompt, access-denied, load errors) into #status, with
+  // no class hook for any of it. Keep the sign-in box in sync: hide it
+  // once content is showing, but bring it back if a status message shows
+  // up later (e.g. access denied after sign-in) so that message is seen.
+  document.addEventListener("DOMContentLoaded", () => {
+    const loginPanel = document.getElementById("login-panel");
+    const protectedContent = document.getElementById("protected-content");
+    const status = document.getElementById("status");
+
+    function syncLoginPanel() {
+      const hasStatusMessage = status.textContent.trim().length > 0;
+      loginPanel.hidden = !protectedContent.hidden && !hasStatusMessage;
+    }
+
+    new MutationObserver(syncLoginPanel).observe(protectedContent, {
+      attributes: true,
+      attributeFilter: ["hidden"],
+    });
+    new MutationObserver(syncLoginPanel).observe(status, {
+      childList: true,
+      characterData: true,
+      subtree: true,
+    });
   });
 </script>

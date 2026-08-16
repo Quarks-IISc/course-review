@@ -1,0 +1,77 @@
+---
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <link rel="icon" href="{{ site.quarks_url }}/assets/images/favicon.ico" />
+
+    <title>{{ page.title | remove: '~~' }} | {{ site.name }}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Same theme stylesheets as the main Quarks site, loaded from there directly
+         so this app always matches whatever the blog currently looks like. -->
+    <link href="{{ site.quarks_url }}/assets/css/screen.css" rel="stylesheet" />
+    <link href="{{ site.quarks_url }}/assets/css/main.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+      integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+      crossorigin="anonymous" />
+
+    <!-- This app's own styling, additive on top of the site theme above -->
+    <link rel="stylesheet" href="{{ site.baseurl }}/style.css" />
+
+    <!-- Instant Dark Mode Check (prevents a flash of the wrong theme) -->
+    <script>
+      (function () {
+        var currentTheme = localStorage.getItem("theme");
+        if (
+          currentTheme === "dark-mode" ||
+          (!currentTheme &&
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          document.documentElement.classList.add("dark-mode");
+        }
+      })();
+    </script>
+
+    <script src="{{ site.quarks_url }}/assets/js/jquery.min.js"></script>
+    <script src="{{ site.quarks_url }}/assets/js/darkmode.js"></script>
+  </head>
+
+  <body class="layout-default">
+
+    {{ content }}
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+      integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+      integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="{{ site.quarks_url }}/assets/js/mediumish.js"></script>
+
+    <!-- Scroll Fade Up Logic -->
+    <script src="{{ site.quarks_url }}/assets/js/fade-up-observer.js"></script>
+  </body>
+</html>

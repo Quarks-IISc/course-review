@@ -11,7 +11,7 @@
     font-size: 1.45rem;
     line-height: 1.6;
     color: var(--text-color);
-    max-width: 760px;
+    max-width: 820px;
     margin: 1.35rem auto 2.5rem;
     text-align: center;
     padding: 0 1.25rem;
@@ -21,7 +21,7 @@
 #login-panel,
 #status,
 #protected-content {
-    max-width: 900px;
+    max-width: 1100px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -46,10 +46,14 @@
 
 #login-panel {
     text-align: center;
-    max-width: 480px;
+    max-width: 540px;
     margin: 0 auto 30px;
 }
 
+/* Same solid-swap button treatment the rest of the site uses (e.g. the
+   newsletter form's .btn-dark): dark-on-light in light mode, flips to
+   light-on-dark automatically, instead of a flat link-blue fill that
+   goes washed-out/low-contrast once --link-color turns pale in dark mode. */
 #loginBtn {
     display: inline-flex;
     align-items: center;
@@ -60,8 +64,8 @@
     border: none;
     border-radius: 8px;
 
-    background: var(--link-color);
-    color: #ffffff;
+    background: var(--heading-color);
+    color: var(--bg-color);
 
     font-family: inherit;
     font-size: 15px;
@@ -69,15 +73,16 @@
 
     cursor: pointer;
 
-    transition: background 0.2s ease, transform 0.15s ease;
+    transition: opacity 0.2s ease, transform 0.15s ease;
 }
 
 #loginBtn:hover {
-    background: var(--link-hover-color);
+    opacity: 0.85;
     transform: translateY(-1px);
 }
 
 #loginBtn:active {
+    opacity: 1;
     transform: translateY(0);
 }
 
@@ -93,7 +98,6 @@
    ========================= */
 
 #status {
-    max-width: 900px;
     margin: 0 auto 18px;
 
     color: var(--text-muted);
@@ -300,8 +304,8 @@
     border: none;
     border-radius: 8px;
 
-    background: var(--link-color);
-    color: #ffffff;
+    background: var(--heading-color);
+    color: var(--bg-color);
 
     font-family: inherit;
     font-size: 15px;
@@ -309,15 +313,16 @@
 
     cursor: pointer;
 
-    transition: background 0.2s ease, transform 0.15s ease;
+    transition: opacity 0.2s ease, transform 0.15s ease;
 }
 
 #loadReviewsBtn:hover {
-    background: var(--link-hover-color);
+    opacity: 0.85;
     transform: translateY(-1px);
 }
 
 #loadReviewsBtn:active {
+    opacity: 1;
     transform: translateY(0);
 }
 
