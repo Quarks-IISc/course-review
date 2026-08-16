@@ -298,3 +298,10 @@ loginBtn.addEventListener("click", async () => {
 });
 
 initialize().catch(console.error);
+
+
+const courseSearch = document.getElementById("courseSearch");
+
+courseSearch.addEventListener("input", () => {
+    console.log(courseSearch.value);
+});
