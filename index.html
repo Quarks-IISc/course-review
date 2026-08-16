@@ -1,84 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quarks Course Reviews</title>
+---
+layout: default
+title: "Course Reviews"
+permalink: /
+---
 
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<section class="course-review-app">
 
-    <h1>Quarks Course Reviews</h1>
+  <div class="section-title section-hero-header">
+    <h2><span>Course Reviews</span></h2>
+  </div>
 
+  <p class="page-sub">Real reviews from IISc students, gated to IISc accounts only.</p>
+
+  <div id="login-panel" class="panel">
     <button id="loginBtn">
-        Sign in with your IISc account (only for students)
+      <i class="fas fa-shield-alt"></i>
+      Sign in with your IISc account
     </button>
+    <p class="login-note">Only students with an IISc Microsoft account can access reviews.</p>
+  </div>
 
-    <pre id="output">
-Not signed in.
-    </pre>
+  <pre id="output"></pre>
 
-    <script type="module" src="app.js"></script>
+  <div id="status"></div>
 
-    <div id="status">
-        Checking authentication...
-    </div>
+  <div id="protected-content" hidden>
 
+    <div id="filters" class="panel">
 
-    <div id="protected-content" hidden>
+      <label for="courseSearch">Course</label>
+      <div class="autocomplete">
+        <input
+          id="courseSearch"
+          type="text"
+          placeholder="Search for a course..."
+          autocomplete="off"
+        >
+        <div id="courseSuggestions"></div>
+      </div>
 
-        <h2>Course Reviews</h2>
+      <input id="courseSelect" type="hidden" value="">
 
-        <div id="filters">
+      <label for="professorSearch">Professor</label>
+      <div class="autocomplete">
+        <input
+          id="professorSearch"
+          type="text"
+          placeholder="Search for a professor..."
+          autocomplete="off"
+        >
+        <div id="professorSuggestions"></div>
+      </div>
 
-            <label for="courseSearch">Course</label>
-            <div class="autocomplete">
-                <input
-                    id="courseSearch"
-                    type="text"
-                    placeholder="Search for a course..."
-                >
-                <div id="courseSuggestions"></div>  
-            </div>
+      <input id="professorSelect" type="hidden" value="">
 
-            <input
-                id="courseSelect"
-                type="hidden"
-                value=""
-            >
-            
-            <label for="professorSearch">Professor</label>
-            <div class="autocomplete">
-
-                <input
-                    id="professorSearch"
-                    type="text"
-                    placeholder="Search for a professor..."
-                >
-
-                <div id="professorSuggestions"></div>
-
-            </div>
-
-            <input
-                id="professorSelect"
-                type="hidden"
-                value=""
-            >
-
-            <button id="loadReviewsBtn">
-                Load Reviews
-            </button>
-
-        </div>
-
-        <hr>
-
-        <div id="reviews">
-
-        </div>
+      <button id="loadReviewsBtn">Load Reviews</button>
 
     </div>
-</body>
-</html>
+
+    <div id="reviews"></div>
+
+  </div>
+
+</section>
+
+<script type="module" src="{{ site.baseurl }}/app.js"></script>
+<script>
+  // app.js only toggles `hidden` on #protected-content, with no class hook,
+  // so hide the sign-in panel ourselves once it's unhidden.
+  document.addEventListener('DOMContentLoaded', () => {
+    const loginPanel = document.getElementById('login-panel');
+    const protectedContent = document.getElementById('protected-content');
+    new MutationObserver(() => {
+      loginPanel.hidden = !protectedContent.hidden;
+    }).observe(protectedContent, { attributes: true, attributeFilter: ['hidden'] });
+  });
+</script>

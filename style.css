@@ -1,28 +1,32 @@
-* {
-    box-sizing: border-box;
+/* This app's own styles. Colors/typography lean entirely on the CSS
+   variables + .dark-mode toggling already defined by the main Quarks
+   site's main.css (loaded by _layouts/default.html), so this stays
+   in sync with the rest of the site automatically. */
+
+.course-review-app {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 0 80px;
 }
 
-body {
-    font-family: Inter, Arial, Helvetica, sans-serif;
-    margin: 0;
-    background: #0f1115;
-    color: #e8eaed;
-    min-height: 100vh;
+.course-review-app .page-sub {
+    color: var(--text-muted);
+    font-size: 1.02rem;
+    text-align: center;
+    margin: -10px 0 30px;
 }
 
 
 /* =========================
-   PAGE HEADER
+   PANELS
    ========================= */
 
-body > h1 {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 50px 24px 20px;
-
-    font-size: 2.2rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
+.panel {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+    padding: 26px;
 }
 
 
@@ -30,35 +34,47 @@ body > h1 {
    LOGIN
    ========================= */
 
-#loginBtn {
-    display: block;
-    margin: 0 auto;
-    padding: 11px 18px;
+#login-panel {
+    text-align: center;
+    max-width: 480px;
+    margin: 0 auto 30px;
+}
 
-    border: 1px solid #3a3f48;
+#loginBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px 20px;
+
+    border: none;
     border-radius: 8px;
 
-    background: #1b1e24;
-    color: #e8eaed;
+    background: var(--link-color);
+    color: #ffffff;
 
+    font-family: inherit;
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 600;
 
     cursor: pointer;
 
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.15s ease;
+    transition: background 0.2s ease, transform 0.15s ease;
 }
 
 #loginBtn:hover {
-    background: #252932;
-    border-color: #555c68;
+    background: var(--link-hover-color);
+    transform: translateY(-1px);
 }
 
 #loginBtn:active {
-    transform: translateY(1px);
+    transform: translateY(0);
+}
+
+.login-note {
+    margin: 14px 0 0;
+    color: var(--text-muted);
+    font-size: 13px;
 }
 
 
@@ -68,34 +84,15 @@ body > h1 {
 
 #status {
     max-width: 900px;
-    margin: 18px auto 0;
-    padding: 0 24px;
+    margin: 0 auto 18px;
 
-    color: #8f96a3;
+    color: var(--text-muted);
     font-size: 14px;
+    text-align: center;
 }
 
 #output {
     display: none;
-}
-
-
-/* =========================
-   MAIN CONTENT
-   ========================= */
-
-#protected-content {
-    max-width: 900px;
-    margin: 45px auto 80px;
-    padding: 0 24px;
-}
-
-#protected-content h2 {
-    margin: 0 0 25px;
-
-    font-size: 1.7rem;
-    font-weight: 650;
-    letter-spacing: -0.3px;
 }
 
 
@@ -106,28 +103,19 @@ body > h1 {
 #filters {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px 20px;
-
-    padding: 22px;
-
-    background: #171a20;
-    border: 1px solid #292e37;
-    border-radius: 12px;
+    gap: 14px 20px;
+    margin-bottom: 28px;
 }
-
-
-/* Labels */
 
 #filters label {
     display: block;
 
-    color: #b8bdc7;
-    font-size: 14px;
+    color: var(--text-muted);
+    font-size: 13px;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
-
-
-/* Course */
 
 #filters label[for="courseSearch"] {
     grid-column: 1;
@@ -138,9 +126,6 @@ body > h1 {
     grid-column: 1;
     grid-row: 2;
 }
-
-
-/* Professor */
 
 #filters label[for="professorSearch"] {
     grid-column: 2;
@@ -162,9 +147,6 @@ body > h1 {
     width: 100%;
 }
 
-
-/* Search inputs */
-
 #courseSearch,
 #professorSearch {
     width: 100%;
@@ -172,10 +154,10 @@ body > h1 {
 
     padding: 12px 14px;
 
-    background: #101217;
-    color: #e8eaed;
+    background: var(--bg-color);
+    color: var(--text-color);
 
-    border: 1px solid #353a44;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
 
     outline: none;
@@ -183,37 +165,28 @@ body > h1 {
     font-family: inherit;
     font-size: 15px;
 
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 #courseSearch:hover,
 #professorSearch:hover {
-    border-color: #464c57;
+    border-color: var(--link-color);
 }
 
 #courseSearch:focus,
 #professorSearch:focus {
-    border-color: #6b7280;
-
-    box-shadow:
-        0 0 0 3px rgba(107, 114, 128, 0.15);
+    border-color: var(--link-color);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--link-color) 20%, transparent);
 }
 
 #courseSearch::placeholder,
 #professorSearch::placeholder {
-    color: #666d79;
+    color: var(--text-muted);
 }
-
-
-/* Selected autocomplete value */
 
 #courseSearch.selected,
 #professorSearch.selected {
-    border-color: #596170;
-    background: #13161b;
+    border-color: var(--link-color);
 }
 
 
@@ -231,9 +204,9 @@ body > h1 {
     width: 100%;
     max-height: 300px;
 
-    background: #191c22;
+    background: var(--card-bg);
 
-    border: 1px solid #353a44;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
 
     overflow-x: hidden;
@@ -241,67 +214,46 @@ body > h1 {
 
     z-index: 100;
 
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.35);
+    box-shadow: var(--card-shadow-hover);
 
     display: none;
 }
-
-
-/* Only show when JavaScript adds .visible */
 
 #courseSuggestions.visible,
 #professorSuggestions.visible {
     display: block;
 }
 
-
-/* Individual suggestions */
-
 .autocomplete-option {
     padding: 11px 14px;
 
-    color: #dfe2e7;
+    color: var(--text-color);
 
     cursor: pointer;
 
-    border-bottom: 1px solid #292d35;
+    border-bottom: 1px solid var(--border-color);
 
     font-size: 15px;
 
-    transition:
-        background 0.12s ease,
-        color 0.12s ease;
+    transition: background 0.12s ease, color 0.12s ease;
 }
 
 .autocomplete-option:last-child {
     border-bottom: none;
 }
 
-
-/* Mouse hover + keyboard selection */
-
 .autocomplete-option:hover,
 .autocomplete-option.active {
-    background: #252932;
-    color: #ffffff;
+    background: var(--blockquote-bg);
+    color: var(--link-color);
 }
-
-
-/* No results */
 
 .autocomplete-empty {
     padding: 12px 14px;
-
-    color: #777f8c;
-
+    color: var(--text-muted);
     font-size: 14px;
-
     cursor: default;
 }
-
-
-/* Scrollbar */
 
 #courseSuggestions::-webkit-scrollbar,
 #professorSuggestions::-webkit-scrollbar {
@@ -315,13 +267,8 @@ body > h1 {
 
 #courseSuggestions::-webkit-scrollbar-thumb,
 #professorSuggestions::-webkit-scrollbar-thumb {
-    background: #353a44;
+    background: var(--border-color);
     border-radius: 10px;
-}
-
-#courseSuggestions::-webkit-scrollbar-thumb:hover,
-#professorSuggestions::-webkit-scrollbar-thumb:hover {
-    background: #4a515d;
 }
 
 
@@ -336,14 +283,15 @@ body > h1 {
     justify-self: center;
 
     width: 220px;
+    margin-top: 4px;
 
     padding: 12px 20px;
 
     border: none;
     border-radius: 8px;
 
-    background: #e8eaed;
-    color: #111318;
+    background: var(--link-color);
+    color: #ffffff;
 
     font-family: inherit;
     font-size: 15px;
@@ -351,13 +299,11 @@ body > h1 {
 
     cursor: pointer;
 
-    transition:
-        background 0.2s ease,
-        transform 0.15s ease;
+    transition: background 0.2s ease, transform 0.15s ease;
 }
 
 #loadReviewsBtn:hover {
-    background: #ffffff;
+    background: var(--link-hover-color);
     transform: translateY(-1px);
 }
 
@@ -367,20 +313,45 @@ body > h1 {
 
 
 /* =========================
-   REVIEWS SECTION
+   REVIEWS
    ========================= */
-
-#protected-content hr {
-    margin: 35px 0;
-
-    border: none;
-    border-top: 1px solid #292e37;
-}
 
 #reviews {
     display: flex;
     flex-direction: column;
     gap: 16px;
+}
+
+.review-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+    padding: 22px 26px;
+
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.review-card:hover {
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-2px);
+}
+
+.review-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--heading-color);
+    margin: 0 0 10px;
+}
+
+.review-card p {
+    margin: 6px 0;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.review-card strong {
+    color: var(--heading-color);
 }
 
 
@@ -390,30 +361,14 @@ body > h1 {
 
 @media (max-width: 700px) {
 
-    body > h1 {
-        padding-top: 30px;
-        padding-bottom: 18px;
-
-        font-size: 1.8rem;
-    }
-
-    #protected-content {
-        margin-top: 35px;
+    .panel {
+        padding: 20px;
     }
 
     #filters {
         grid-template-columns: 1fr;
-        gap: 10px;
-
-        padding: 18px;
+        gap: 12px;
     }
-
-    #filters label {
-        margin-top: 4px;
-    }
-
-
-    /* Course */
 
     #filters label[for="courseSearch"] {
         grid-column: 1;
@@ -425,9 +380,6 @@ body > h1 {
         grid-row: 2;
     }
 
-
-    /* Professor */
-
     #filters label[for="professorSearch"] {
         grid-column: 1;
         grid-row: 3;
@@ -438,14 +390,9 @@ body > h1 {
         grid-row: 4;
     }
 
-
-    /* Button */
-
     #loadReviewsBtn {
         grid-column: 1;
         grid-row: 5;
-
         width: 100%;
-        margin-top: 5px;
     }
 }

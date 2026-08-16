@@ -1,0 +1,23 @@
+# Site
+name: "Quarks Course Reviews"
+title: "Course Reviews"
+description: "IISc student course & professor reviews, restricted to IISc accounts."
+baseurl: ""
+url: "" # set to the deployed URL (custom domain or GitHub Pages URL) once known
+
+# Where this lives relative to quarks.ug.iisc.ac.in, used by the nav's "back" link.
+quarks_url: "https://quarks.ug.iisc.ac.in"
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - package.json
+  - package-lock.json
+  - LICENSE
+  - README.md
+  - vendor
+
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag

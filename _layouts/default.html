@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <link rel="icon" href="{{ site.baseurl }}/favicon.ico" />
+
+    <title>{{ page.title | remove: '~~' }} | {{ site.name }}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Same theme stylesheets as the main Quarks site, loaded from there directly
+         so this app always matches whatever the blog currently looks like. -->
+    <link href="{{ site.quarks_url }}/assets/css/screen.css" rel="stylesheet" />
+    <link href="{{ site.quarks_url }}/assets/css/main.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+      integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+      crossorigin="anonymous" />
+
+    <!-- This app's own styling, additive on top of the site theme above -->
+    <link rel="stylesheet" href="{{ site.baseurl }}/style.css" />
+
+    <!-- Instant Dark Mode Check (prevents a flash of the wrong theme) -->
+    <script>
+      (function () {
+        var currentTheme = localStorage.getItem("theme");
+        if (
+          currentTheme === "dark-mode" ||
+          (!currentTheme &&
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          document.documentElement.classList.add("dark-mode");
+        }
+      })();
+    </script>
+
+    <script src="{{ site.quarks_url }}/assets/js/jquery.min.js"></script>
+    <script src="{{ site.quarks_url }}/assets/js/darkmode.js"></script>
+  </head>
+
+  <body class="layout-default">
+
+    <!-- Begin Menu Navigation
+    ================================================== -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+      <div class="container px-0">
+        <a class="navbar-brand" href="{{ site.quarks_url }}/" title="Go to Homepage">
+          <img src="{{ site.baseurl }}/assets/images/logo.png" alt="{{ site.name }}" />
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarMediumish"
+          aria-controls="navbarMediumish"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarMediumish">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ site.quarks_url }}/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ site.quarks_url }}/stories">Stories</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ site.quarks_url }}/poems">Poems</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ site.quarks_url }}/gallery">Gallery</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ site.quarks_url }}/news/">News</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{{ site.baseurl }}/">Course Reviews</a>
+            </li>
+
+            <li class="nav-item d-flex align-items-center ml-4">
+              <a class="nav-link dark-mode-toggle ml-1" id="dark-mode-toggle" href="#" title="Toggle Dark Mode">
+                <i class="fas fa-moon"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navigation
+    ================================================== -->
+
+    <div class="site-content">
+      <div class="container">
+        <div class="main-content">{{ content }}</div>
+      </div>
+    </div>
+
+    <style>
+      .footer-heading {
+        font-size: 1.2rem !important;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 1.2rem !important;
+      }
+      .footer-link-list li {
+        margin-bottom: 0.6rem;
+        font-size: 1rem;
+      }
+      .footer-link-list a {
+        transition: all 0.2s ease-in-out;
+        display: inline-block;
+      }
+      .footer-link-list a:hover {
+        color: #000 !important;
+        transform: translateX(5px);
+        text-decoration: none;
+      }
+      .dark-mode .footer-link-list a:hover {
+        color: #fff !important;
+      }
+      .footer-link-list i {
+        margin-right: 10px;
+        width: 20px;
+        text-align: center;
+        color: #6c757d;
+        font-size: 0.9rem;
+      }
+      .dark-mode .footer-link-list i {
+        color: #adb5bd;
+      }
+    </style>
+
+    <!-- Footer -->
+    <footer id="site-footer" class="footer mt-5 py-5 border-top">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-sm-6 mb-4 mb-md-0 text-center text-md-left">
+            <img
+              src="{{ site.baseurl }}/assets/images/logo.png"
+              alt="{{ site.name }}"
+              class="footer-logo mb-3"
+              style="max-height: 40px"
+            />
+            <p class="mb-1">&copy; {{ site.time | date: "%Y" }} IISc Quarks.</p>
+          </div>
+
+          <div class="col-md-3 col-sm-6 mb-4 mb-md-0 text-center text-md-left">
+            <h5 class="font-weight-bold footer-heading">Connect with Us</h5>
+            <ul class="list-unstyled footer-link-list">
+              <li>
+                <a href="{{ site.quarks_url }}/aboutus" class="text-muted">
+                  <i class="fas fa-info-circle"></i>About Quarks
+                </a>
+              </li>
+              <li>
+                <a href="mailto:quarks.ug@iisc.ac.in" class="text-muted">
+                  <i class="fas fa-envelope"></i>Email Us
+                </a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/company/quarks-iisc/" target="_blank" rel="noopener noreferrer" class="text-muted">
+                  <i class="fab fa-linkedin"></i>LinkedIn
+                </a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/quarks_ug_iisc" target="_blank" rel="noopener noreferrer" class="text-muted">
+                  <i class="fab fa-instagram"></i>Instagram
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-md-2 col-sm-6 mb-4 mb-md-0 text-center text-md-left">
+            <h5 class="font-weight-bold footer-heading">Quarks</h5>
+            <ul class="list-unstyled footer-link-list">
+              <li><a href="{{ site.quarks_url }}/stories" class="text-muted">Stories</a></li>
+              <li><a href="{{ site.quarks_url }}/poems" class="text-muted">Poems</a></li>
+              <li><a href="{{ site.quarks_url }}/gallery" class="text-muted">Gallery</a></li>
+              <li><a href="{{ site.quarks_url }}/news/" class="text-muted">News</a></li>
+            </ul>
+          </div>
+
+          <div class="col-md-3 col-sm-12 text-center text-md-left">
+            <style>
+              .subscription-form .form-control {
+                border-radius: 4px 0 0 4px;
+                border: 1px solid #ced4da;
+                padding: 0.6rem 1rem;
+                height: auto;
+              }
+              .subscription-form .btn {
+                border-radius: 0 4px 4px 0;
+                padding: 0.6rem 1.5rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.8rem;
+                letter-spacing: 0.5px;
+              }
+              #subscription-message {
+                transition: all 0.3s ease;
+                min-height: 1.5rem;
+              }
+              .dark-mode .subscription-form .form-control {
+                background-color: #2b2b2b;
+                border-color: #444;
+                color: #eee;
+              }
+              .dark-mode .subscription-form .form-control::placeholder {
+                color: rgba(255, 255, 255, 0.6);
+              }
+              .dark-mode .subscription-form .btn-dark {
+                background-color: #eee;
+                color: #111;
+                border-color: #eee;
+              }
+              .dark-mode .modal-content {
+                background-color: #1e1e1e;
+                color: #e0e0e0;
+                border: 1px solid #333;
+              }
+              .dark-mode .modal-header .close {
+                color: #e0e0e0;
+                text-shadow: none;
+                opacity: 0.8;
+              }
+              .dark-mode .modal-header .close:hover {
+                color: #fff;
+                opacity: 1;
+              }
+              .dark-mode .modal-body p.lead {
+                color: #bdbdbd;
+              }
+            </style>
+
+            <h5 class="font-weight-bold footer-heading">Subscribe to Our Newsletter</h5>
+            <p class="small text-muted mb-3">
+              Stay updated with the latest stories and insights from the IISc community.
+            </p>
+
+            <form id="emailForm" class="subscription-form">
+              <div class="input-group">
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  class="form-control"
+                  required
+                  placeholder="Enter your email"
+                  aria-label="Email address"
+                />
+                <div class="input-group-append">
+                  <button class="btn btn-dark" type="submit" id="submit">
+                    <span class="submit-text">Join</span>
+                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </div>
+              <div id="subscription-message" class="small mt-2"></div>
+            </form>
+
+            <!-- Subscription Success Modal -->
+            <div class="modal fade" id="subscriptionModal" tabindex="-1" role="dialog" aria-labelledby="subscriptionModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header border-0">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body text-center pb-5">
+                    <div class="mb-4">
+                      <i class="fas fa-check-circle text-success" style="font-size: 4rem"></i>
+                    </div>
+                    <h3 class="modal-title mb-3" id="subscriptionModalLabel">Thanks for subscribing to Quarks!</h3>
+                    <p class="lead">We will keep you posted about our upcoming newsletters, posts, and more.</p>
+                    <button type="button" class="btn btn-dark mt-4 px-5" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <script src="{{ site.quarks_url }}/assets/js/subscription.js"></script>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+      integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+      integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="{{ site.quarks_url }}/assets/js/mediumish.js"></script>
+  </body>
+</html>
