@@ -2,10 +2,11 @@
 name: "Quarks Course Reviews"
 title: "Course Reviews"
 description: "IISc student course & professor reviews, restricted to IISc accounts."
-baseurl: ""
-url: "" # set to the deployed URL (custom domain or GitHub Pages URL) once known
+baseurl: "/course-review"
+url: "https://quarks.ug.iisc.ac.in"
 
-# Where this lives relative to quarks.ug.iisc.ac.in, used by the nav's "back" link.
+# Where the main Quarks blog lives, used for the nav/footer's cross-links
+# and for pulling shared CSS/JS assets live from the blog itself.
 quarks_url: "https://quarks.ug.iisc.ac.in"
 
 exclude:

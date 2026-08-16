@@ -33,7 +33,12 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Build with Jekyll
-        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+        # Fixed baseurl, not steps.pages.outputs.base_path: this site is
+        # reverse-proxied to quarks.ug.iisc.ac.in/course-review/, which
+        # doesn't necessarily match this repo's own GitHub Pages project
+        # path. This also has to stay in sync with the redirectUri
+        # registered in Entra (see auth.js).
+        run: bundle exec jekyll build --baseurl "/course-review"
         env:
           JEKYLL_ENV: production
 
