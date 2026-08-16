@@ -216,42 +216,6 @@ function renderReviews(reviews) {
     }
 }
 
-/*
-async function initializeProtectedContent(idToken) {
-    const result = await fetch(
-        "https://hojlmrrgkqvchqyggmbb.supabase.co/functions/v1/get-review",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                token: idToken,
-                courseId: 786,
-                professorId: 456,
-            }),
-        }
-    );
-
-    const data = await result.json();
-
-    console.log("Authorization result:", data);
-    console.table(data.reviews);
-
-    if (!result.ok) {
-        document.getElementById("status").textContent =
-            "Authentication failed. Please try again later.";
-        return;
-    }
-
-    if (data.authorized) {
-        showProtectedContent();
-    } else {
-        showAccessDenied();
-    }
-}
-*/
-
 async function displayAccount(account) {
 
     output.textContent = `
@@ -280,6 +244,64 @@ loginBtn.addEventListener("click", async () => {
 
 initialize().catch(console.error);
 
+function setupAutocomplete(
+    searchInput,
+    suggestionsContainer,
+    hiddenInput,
+    items
+) {
+
+    searchInput.addEventListener("input", () => {
+
+        hiddenInput.value = "";
+
+        const query =
+            searchInput.value
+                .toLowerCase()
+                .trim();
+
+        suggestionsContainer.innerHTML = "";
+
+        if (!query) {
+            return;
+        }
+
+        const matches =
+            items.filter(item =>
+                item.name
+                    .toLowerCase()
+                    .includes(query)
+            );
+
+        for (const item of matches) {
+
+            const suggestion =
+                document.createElement("div");
+
+            suggestion.textContent =
+                item.name;
+
+            suggestion.addEventListener(
+                "click",
+                () => {
+
+                    searchInput.value =
+                        item.name;
+
+                    hiddenInput.value =
+                        item.id;
+
+                    suggestionsContainer.innerHTML =
+                        "";
+                }
+            );
+
+            suggestionsContainer.appendChild(
+                suggestion
+            );
+        }
+    });
+}
 
 const courseSearch =
     document.getElementById("courseSearch");
@@ -290,51 +312,10 @@ const courseSelect =
 const courseSuggestions =
     document.getElementById("courseSuggestions");
 
-courseSearch.addEventListener("input", () => {
 
-    courseSelect.value = "";
-
-    const query =
-        courseSearch.value.toLowerCase().trim();
-
-    courseSuggestions.innerHTML = "";
-
-    if (!query) {
-        return;
-    }
-
-
-    const matches =
-        courses.filter(course =>
-            course.name
-                .toLowerCase()
-                .includes(query)
-        );
-
-    for (const course of matches) {
-
-    const suggestion =
-        document.createElement("div");
-
-    suggestion.textContent =
-        course.name;
-
-    suggestion.addEventListener(
-        "click",
-        () => {
-
-            courseSearch.value =
-                course.name;
-
-            courseSelect.value =
-                course.id;
-
-            courseSuggestions.innerHTML = "";
-        }
-    );
-
-    courseSuggestions.appendChild(
-        suggestion
-    );
-}
-});
+setupAutocomplete(
+    courseSearch,
+    courseSuggestions,
+    courseSelect,
+    courses
+);
