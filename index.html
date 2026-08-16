@@ -48,10 +48,24 @@ Not signed in.
                 value=""
             >
             
-            <label for="professorSelect">Professor</label>
-            <select id="professorSelect">
-                <option value="">All Professors</option>
-            </select>
+            <label for="professorSearch">Professor</label>
+            <div class="autocomplete">
+
+                <input
+                    id="professorSearch"
+                    type="text"
+                    placeholder="Search for a professor..."
+                >
+
+                <div id="professorSuggestions"></div>
+
+            </div>
+
+            <input
+                id="professorSelect"
+                type="hidden"
+                value=""
+            >
 
             <button id="loadReviewsBtn">
                 Load Reviews

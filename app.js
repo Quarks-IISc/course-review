@@ -7,7 +7,7 @@ const loginBtn = document.getElementById("loginBtn");
 const output = document.getElementById("output");
 
 let courses = [];
-
+let professors = [];
 
 const courseSearch =
     document.getElementById("courseSearch");
@@ -17,6 +17,15 @@ const courseSelect =
 
 const courseSuggestions =
     document.getElementById("courseSuggestions");
+
+const professorSearch =
+    document.getElementById("professorSearch");
+
+const professorSelect =
+    document.getElementById("professorSelect");
+
+const professorSuggestions =
+    document.getElementById("professorSuggestions");
 
 
 async function initialize() {
@@ -69,6 +78,13 @@ async function initializeProtectedContent(idToken) {
         courseSuggestions,
         courseSelect,
         courses
+    );
+
+    setupAutocomplete(
+        professorSearch,
+        professorSuggestions,
+        professorSelect,
+        professors
     );
 
     document
@@ -138,22 +154,8 @@ async function loadProfessors(idToken) {
         return false;
     }
 
-    const select = document.getElementById("professorSelect");
-
-    select.innerHTML =
-        `<option value="">All Professors</option>`;
-
-    console.log(data);
-
-    for (const professor of data.professors) {
-        const option = document.createElement("option");
-
-        option.value = professor.id;
-        option.textContent = professor.name;
-
-        select.appendChild(option);
-    }
-
+    professors = data.professors;
+    console.log(professors);
     return true;
 }
 
