@@ -31,6 +31,11 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
+        with:
+          # Auto-creates the Pages site via the API if it hasn't been
+          # initialized yet (fixes "Get Pages site failed... Not Found"
+          # on a repo where Pages was just toggled on in Settings).
+          enablement: true
 
       - name: Build with Jekyll
         # Fixed baseurl, not steps.pages.outputs.base_path: this site is
