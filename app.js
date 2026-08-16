@@ -6,6 +6,8 @@ const FUNCTIONS_BASE_URL = "https://hojlmrrgkqvchqyggmbb.supabase.co/functions/v
 const loginBtn = document.getElementById("loginBtn");
 const output = document.getElementById("output");
 
+let courses = [];
+
 async function initialize() {
     // Process redirect response (if we just came back from Microsoft)
     const response = await msalInstance.handleRedirectPromise();
@@ -86,20 +88,8 @@ async function loadCourses(idToken) {
         return false;
     }
 
-    const select = document.getElementById("courseSelect");
-
-    select.innerHTML =
-        `<option value="">All Courses</option>`;
-
-    for (const course of data.courses) {
-        const option = document.createElement("option");
-
-        option.value = course.id;
-        option.textContent = course.name;
-
-        select.appendChild(option);
-    }
-
+    courses = data.courses;
+    console.log(courses);
     return true;
 }
 
