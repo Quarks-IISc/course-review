@@ -3,17 +3,27 @@
    site's main.css (loaded by _layouts/default.html), so this stays
    in sync with the rest of the site automatically. */
 
-.course-review-app {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px 0 80px;
-}
-
-.course-review-app .page-sub {
-    color: var(--text-muted);
-    font-size: 1.02rem;
+/* Same "dek" style the club pages use under their hero header
+   (normally injected by _includes/club-dek.html) */
+.club-dek {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.45rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    max-width: 760px;
+    margin: 1.35rem auto 2.5rem;
     text-align: center;
-    margin: -10px 0 30px;
+    padding: 0 1.25rem;
+}
+@media (max-width: 767px) { .club-dek { font-size: 1.2rem; } }
+
+#login-panel,
+#status,
+#protected-content {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 

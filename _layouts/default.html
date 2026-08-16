@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <link rel="icon" href="{{ site.baseurl }}/favicon.ico" />
+    <link rel="icon" href="{{ site.quarks_url }}/assets/images/favicon.ico" />
 
     <title>{{ page.title | remove: '~~' }} | {{ site.name }}</title>
 
@@ -58,7 +58,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
       <div class="container px-0">
         <a class="navbar-brand" href="{{ site.quarks_url }}/" title="Go to Homepage">
-          <img src="{{ site.baseurl }}/assets/images/logo.png" alt="{{ site.name }}" />
+          <img src="{{ site.quarks_url }}/assets/images/logo.png" alt="{{ site.name }}" />
         </a>
 
         <button
@@ -90,11 +90,111 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ site.quarks_url }}/news/">News</a>
             </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="{{ site.baseurl }}/">Course Reviews</a>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                UG@IISc
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{{ site.quarks_url }}/aboutus">About Quarks</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ site.quarks_url }}/previous-editions">Previous Editions <br>& Newsletters</a>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-submenu">
+                  <a class="dropdown-item dropdown-toggle-side" href="{{ site.quarks_url }}/clubs/">Clubs</a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{{ site.quarks_url }}/clubs/">AASCEND &mdash; All Clubs</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ site.quarks_url }}/clubs/astrae">Astrae</a>
+                    <a class="dropdown-item" href="{{ site.quarks_url }}/clubs/amalgam">Amalgam</a>
+                    <a class="dropdown-item" href="{{ site.quarks_url }}/clubs/samasya">Samasya</a>
+                    <a class="dropdown-item" href="{{ site.quarks_url }}/clubs/catalysts">Catalysts</a>
+                    <a class="dropdown-item" href="{{ site.quarks_url }}/clubs/ensemble">Ensemble</a>
+                    <a class="dropdown-item" href="{{ site.quarks_url }}/clubs/naturalists">Naturalists</a>
+                    <a class="dropdown-item" href="{{ site.quarks_url }}/clubs/databased">Databased</a>
+                    <a class="dropdown-item" href="{{ site.quarks_url }}/clubs/vicharaka">Vicharaka</a>
+                    <a class="dropdown-item" href="{{ site.quarks_url }}/clubs/bookclub">Book Club</a>
+                  </div>
+                </div>
+              </div>
             </li>
 
             <li class="nav-item d-flex align-items-center ml-4">
+              <script src="{{ site.quarks_url }}/assets/js/lunr.js"></script>
+
+              <style>
+                .lunrsearchresult .title {color: #d9230f;}
+                .lunrsearchresult .url {color: silver;}
+                .lunrsearchresult a {display: block; color: #777;}
+                .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+                .lunrsearchresult a:hover .title {text-decoration: underline;}
+              </style>
+
+              <div class="lunrsearch-wrapper" style="position: relative;">
+                <form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+                  <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Search..."/>
+                </form>
+                <div id="lunrsearchresults" style="display:none;">
+                  <div class="search-box">
+                    <div id="modtit"></div>
+                    <ul class="mb-0"></ul>
+                    <button class="btn btn-danger btn-sm btnx">Close</button>
+                  </div>
+                </div>
+              </div>
+
+              <style>
+                #lunrsearchresults {
+                    position: absolute;
+                    top: 100%;
+                    right: 0;
+                    z-index: 1020;
+                    width: 600px;
+                    max-width: 90vw;
+                }
+                .search-box {
+                    position: relative;
+                    z-index: 2;
+                    padding: 2pc;
+                    width: 100%;
+                    margin-top: 10px;
+                    background: #111;
+                    color: white;
+                    border-radius: 12px;
+                    max-height: 70vh;
+                    overflow: hidden;
+                    box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+                }
+                .search-box ul {
+                    max-height: 50vh;
+                    overflow-y: auto;
+                    padding-bottom: 20px;
+                }
+                @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,500&display=swap');
+                #modtit,
+                #modtit * {
+                    font-family: 'Lora', serif !important;
+                    font-weight: 500;
+                    font-style: italic;
+                }
+                body.modal-open {
+                    overflow: hidden;
+                }
+                .btnx {
+                    margin-top: 15px;
+                }
+              </style>
+
+              <script src="{{ site.quarks_url }}/assets/js/lunrsearchengine.js"></script>
+
               <a class="nav-link dark-mode-toggle ml-1" id="dark-mode-toggle" href="#" title="Toggle Dark Mode">
                 <i class="fas fa-moon"></i>
               </a>
@@ -153,7 +253,7 @@
         <div class="row">
           <div class="col-md-3 col-sm-6 mb-4 mb-md-0 text-center text-md-left">
             <img
-              src="{{ site.baseurl }}/assets/images/logo.png"
+              src="{{ site.quarks_url }}/assets/images/logo.png"
               alt="{{ site.name }}"
               class="footer-logo mb-3"
               style="max-height: 40px"
@@ -184,20 +284,26 @@
                   <i class="fab fa-instagram"></i>Instagram
                 </a>
               </li>
+              <li>
+                <a href="https://www.facebook.com/QuarksIISc/" target="_blank" rel="noopener noreferrer" class="text-muted">
+                  <i class="fab fa-facebook"></i>Facebook
+                </a>
+              </li>
             </ul>
           </div>
 
           <div class="col-md-2 col-sm-6 mb-4 mb-md-0 text-center text-md-left">
-            <h5 class="font-weight-bold footer-heading">Quarks</h5>
+            <h5 class="font-weight-bold footer-heading">All Posts</h5>
             <ul class="list-unstyled footer-link-list">
               <li><a href="{{ site.quarks_url }}/stories" class="text-muted">Stories</a></li>
               <li><a href="{{ site.quarks_url }}/poems" class="text-muted">Poems</a></li>
               <li><a href="{{ site.quarks_url }}/gallery" class="text-muted">Gallery</a></li>
               <li><a href="{{ site.quarks_url }}/news/" class="text-muted">News</a></li>
+              <li><a href="{{ site.quarks_url }}/crosswords" class="text-muted">Crosswords</a></li>
             </ul>
           </div>
 
-          <div class="col-md-3 col-sm-12 text-center text-md-left">
+          <div class="col-md-4 col-sm-12 text-center text-md-left">
             <style>
               .subscription-form .form-control {
                 border-radius: 4px 0 0 4px;
