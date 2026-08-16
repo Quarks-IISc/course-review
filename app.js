@@ -261,25 +261,6 @@ ${account.name}
 Username:
 ${account.username}
 `;
-/*
-Home Tenant:
-${account.homeAccountId.split(".")[1]}
-
-Issuing Tenant:
-${claims.tid}
-
-Subject:
-${claims.sub}
-
-Object ID:
-${claims.oid}
-
-Issuer:
-${claims.iss}
-
-Audience:
-${claims.aud}
-*/
 }
 
 function showProtectedContent() {
@@ -300,8 +281,60 @@ loginBtn.addEventListener("click", async () => {
 initialize().catch(console.error);
 
 
-const courseSearch = document.getElementById("courseSearch");
+const courseSearch =
+    document.getElementById("courseSearch");
+
+const courseSelect =
+    document.getElementById("courseSelect");
+
+const courseSuggestions =
+    document.getElementById("courseSuggestions");
 
 courseSearch.addEventListener("input", () => {
-    console.log(courseSearch.value);
+
+    courseSelect.value = "";
+
+    const query =
+        courseSearch.value.toLowerCase().trim();
+
+    courseSuggestions.innerHTML = "";
+
+    if (!query) {
+        return;
+    }
+
+
+    const matches =
+        courses.filter(course =>
+            course.name
+                .toLowerCase()
+                .includes(query)
+        );
+
+    for (const course of matches) {
+
+    const suggestion =
+        document.createElement("div");
+
+    suggestion.textContent =
+        course.name;
+
+    suggestion.addEventListener(
+        "click",
+        () => {
+
+            courseSearch.value =
+                course.name;
+
+            courseSelect.value =
+                course.id;
+
+            courseSuggestions.innerHTML = "";
+        }
+    );
+
+    courseSuggestions.appendChild(
+        suggestion
+    );
+}
 });

@@ -33,11 +33,14 @@ Not signed in.
         <div id="filters">
 
             <label for="courseSearch">Course</label>
-            <input
-                id="courseSearch"
-                type="text"
-                placeholder="Search for a course..."
-            >
+            <div class="autocomplete">
+                <input
+                    id="courseSearch"
+                    type="text"
+                    placeholder="Search for a course..."
+                >
+                <div id="courseSuggestions"></div>  
+            </div>
 
             <input
                 id="courseSelect"
