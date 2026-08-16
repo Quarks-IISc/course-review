@@ -8,6 +8,17 @@ const output = document.getElementById("output");
 
 let courses = [];
 
+
+const courseSearch =
+    document.getElementById("courseSearch");
+
+const courseSelect =
+    document.getElementById("courseSelect");
+
+const courseSuggestions =
+    document.getElementById("courseSuggestions");
+
+
 async function initialize() {
     // Process redirect response (if we just came back from Microsoft)
     const response = await msalInstance.handleRedirectPromise();
@@ -52,6 +63,13 @@ async function initializeProtectedContent(idToken) {
     if (!coursesLoaded || !professorLoaded){
         return;
     } 
+
+    setupAutocomplete(
+        courseSearch,
+        courseSuggestions,
+        courseSelect,
+        courses
+    );
 
     document
         .getElementById("loadReviewsBtn")
@@ -302,20 +320,3 @@ function setupAutocomplete(
         }
     });
 }
-
-const courseSearch =
-    document.getElementById("courseSearch");
-
-const courseSelect =
-    document.getElementById("courseSelect");
-
-const courseSuggestions =
-    document.getElementById("courseSuggestions");
-
-
-setupAutocomplete(
-    courseSearch,
-    courseSuggestions,
-    courseSelect,
-    courses
-);
