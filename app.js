@@ -270,55 +270,149 @@ function setupAutocomplete(
     hiddenInput,
     items
 ) {
+    let selectedIndex = -1;
 
-    searchInput.addEventListener("input", () => {
-
-        hiddenInput.value = "";
-
-        const query =
-            searchInput.value
-                .toLowerCase()
-                .trim();
-
+    function closeSuggestions() {
         suggestionsContainer.innerHTML = "";
+        suggestionsContainer.classList.remove("visible");
+        selectedIndex = -1;
+    }
+
+    function selectItem(item) {
+        searchInput.value = item.name;
+        hiddenInput.value = item.id;
+
+        searchInput.classList.add("selected");
+
+        closeSuggestions();
+    }
+
+    function renderSuggestions(query) {
+        suggestionsContainer.innerHTML = "";
+        selectedIndex = -1;
 
         if (!query) {
+            closeSuggestions();
             return;
         }
 
-        const matches =
-            items.filter(item =>
+        const matches = items
+            .filter(item =>
                 item.name
                     .toLowerCase()
                     .includes(query)
-            );
+            )
+            .slice(0, 8);
 
-        for (const item of matches) {
+        if (matches.length === 0) {
+            const empty = document.createElement("div");
+            empty.className = "autocomplete-empty";
+            empty.textContent = "No matches found";
+            suggestionsContainer.appendChild(empty);
 
-            const suggestion =
-                document.createElement("div");
-
-            suggestion.textContent =
-                item.name;
-
-            suggestion.addEventListener(
-                "click",
-                () => {
-
-                    searchInput.value =
-                        item.name;
-
-                    hiddenInput.value =
-                        item.id;
-
-                    suggestionsContainer.innerHTML =
-                        "";
-                }
-            );
-
-            suggestionsContainer.appendChild(
-                suggestion
-            );
+            suggestionsContainer.classList.add("visible");
+            return;
         }
+
+        matches.forEach((item, index) => {
+            const suggestion = document.createElement("div");
+
+            suggestion.className = "autocomplete-option";
+            suggestion.textContent = item.name;
+
+            suggestion.addEventListener("mousedown", (event) => {
+                // Prevent the input's blur event from firing first
+                event.preventDefault();
+                selectItem(item);
+            });
+
+            suggestionsContainer.appendChild(suggestion);
+        });
+
+        suggestionsContainer.classList.add("visible");
+    }
+
+    searchInput.addEventListener("input", () => {
+        // Any modification invalidates the previous selection
+        hiddenInput.value = "";
+        searchInput.classList.remove("selected");
+
+        const query = searchInput.value
+            .toLowerCase()
+            .trim();
+
+        renderSuggestions(query);
+    });
+
+    searchInput.addEventListener("keydown", (event) => {
+        const options =
+            suggestionsContainer.querySelectorAll(
+                ".autocomplete-option"
+            );
+
+        if (!options.length) {
+            return;
+        }
+
+        if (event.key === "ArrowDown") {
+            event.preventDefault();
+
+            selectedIndex =
+                (selectedIndex + 1) % options.length;
+
+        } else if (event.key === "ArrowUp") {
+            event.preventDefault();
+
+            selectedIndex =
+                (selectedIndex - 1 + options.length) %
+                options.length;
+
+        } else if (event.key === "Enter") {
+            event.preventDefault();
+
+            if (selectedIndex >= 0) {
+                options[selectedIndex].dispatchEvent(
+                    new MouseEvent("mousedown")
+                );
+            }
+
+            return;
+
+        } else if (event.key === "Escape") {
+            closeSuggestions();
+            return;
+        } else {
+            return;
+        }
+
+        options.forEach((option, index) => {
+            option.classList.toggle(
+                "active",
+                index === selectedIndex
+            );
+        });
+    });
+
+    searchInput.addEventListener("focus", () => {
+        const query = searchInput.value
+            .toLowerCase()
+            .trim();
+
+        if (query) {
+            renderSuggestions(query);
+        }
+    });
+
+    searchInput.addEventListener("blur", () => {
+        // Delay closing so clicking a suggestion still works
+        setTimeout(() => {
+            closeSuggestions();
+
+            // If the user typed something but didn't select
+            // an actual item, clear it.
+            if (!hiddenInput.value) {
+                searchInput.value = "";
+            }
+        }, 150);
     });
 }
