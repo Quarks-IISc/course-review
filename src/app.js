@@ -4,10 +4,18 @@ import { msalInstance, loginRequest } from "./auth.js";
 const FUNCTIONS_BASE_URL = "https://hojlmrrgkqvchqyggmbb.supabase.co/functions/v1";
 
 const loginBtn = document.getElementById("loginBtn");
+const retryBtn = document.getElementById("retryBtn");
 const output = document.getElementById("output");
 
 let courses = [];
 let professors = [];
+
+function setStatus(message, isError = false) {
+    const status = document.getElementById("status");
+    status.textContent = message;
+    status.classList.toggle("status-error", isError);
+    retryBtn.hidden = !isError;
+}
 
 // fzf-style fuzzy match: query chars just need to appear in order in the
 // target. Consecutive runs and early matches score higher.
@@ -62,8 +70,7 @@ async function initialize() {
         response = await msalInstance.handleRedirectPromise();
     } catch (err) {
         console.error("MSAL redirect handling failed:", err);
-        document.getElementById("status").textContent =
-            "Sign-in failed (" + (err.errorCode || err.message || "unknown error") + "). Please try again.";
+        setStatus("Sign-in failed (" + (err.errorCode || err.message || "unknown error") + "). Please try again.", true);
         return;
     }
 
@@ -76,8 +83,7 @@ async function initialize() {
         msalInstance.getAllAccounts()[0];
 
     if (!account) {
-        document.getElementById("status").textContent =
-            "Please sign in.";
+        setStatus("Please sign in.");
         return;
     }
 
@@ -95,8 +101,7 @@ async function initialize() {
             ).idToken;
     } catch (err) {
         console.error("Failed to acquire token:", err);
-        document.getElementById("status").textContent =
-            "Your session expired. Please sign in again.";
+        setStatus("Your session expired. Please sign in again.", true);
         return;
     }
 
@@ -155,8 +160,7 @@ async function loadCourses(idToken) {
     const data = await result.json();
 
     if (!result.ok) {
-        document.getElementById("status").textContent =
-            "Failed to load courses.";
+        setStatus("Failed to load courses.", true);
         return false;
     }
 
@@ -187,8 +191,7 @@ async function loadProfessors(idToken) {
     const data = await result.json();
 
     if (!result.ok) {
-        document.getElementById("status").textContent =
-            "Failed to load professors.";
+        setStatus("Failed to load professors.", true);
         return false;
     }
 
@@ -227,8 +230,7 @@ async function loadReviews(idToken) {
     const data = await result.json();
 
     if (!result.ok) {
-        document.getElementById("status").textContent =
-            "Failed to load reviews.";
+        setStatus("Failed to load reviews.", true);
         return;
     }
 
@@ -301,13 +303,12 @@ ${account.username}
 }
 
 function showProtectedContent() {
-    document.getElementById("status").textContent = "";
+    setStatus("");
     document.getElementById("protected-content").hidden = false;
 }
 
 function showAccessDenied() {
-    document.getElementById("status").textContent =
-        "Access denied. Your account is not authorized to view this site.";
+    setStatus("Access denied. Your account is not authorized to view this site.", true);
     document.getElementById("protected-content").hidden = true;
 }
 
@@ -315,12 +316,19 @@ loginBtn.addEventListener("click", async () => {
     await msalInstance.loginRedirect(loginRequest);
 });
 
+retryBtn.addEventListener("click", async () => {
+    // A plain re-click of "Sign in" reuses MSAL's cached account/session,
+    // so a denied or broken account just loops back to the same result.
+    // logoutRedirect clears that cache and the Microsoft SSO session so
+    // the account picker actually shows up again.
+    await msalInstance.logoutRedirect({
+        postLogoutRedirectUri: window.location.origin + window.location.pathname,
+    });
+});
+
 initialize().catch((err) => {
     console.error("Unexpected error during sign-in:", err);
-    const status = document.getElementById("status");
-    if (status) {
-        status.textContent = "Something went wrong during sign-in. Please refresh and try again.";
-    }
+    setStatus("Something went wrong during sign-in. Please refresh and try again.", true);
 });
 
 function setupAutocomplete(
