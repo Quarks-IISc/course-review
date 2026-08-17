@@ -9,6 +9,34 @@ const output = document.getElementById("output");
 let courses = [];
 let professors = [];
 
+// fzf-style fuzzy match: query chars just need to appear in order in the
+// target. Consecutive runs and early matches score higher.
+function fuzzyScore(query, target) {
+    query = query.toLowerCase();
+    target = target.toLowerCase();
+
+    let qi = 0;
+    let score = 0;
+    let consecutive = 0;
+    let firstMatchIndex = -1;
+
+    for (let ti = 0; ti < target.length && qi < query.length; ti++) {
+        if (target[ti] === query[qi]) {
+            if (firstMatchIndex === -1) firstMatchIndex = ti;
+            score += 1 + consecutive;
+            consecutive++;
+            qi++;
+        } else {
+            consecutive = 0;
+        }
+    }
+
+    if (qi < query.length) return -1;
+
+    score += Math.max(0, 5 - firstMatchIndex);
+    return score;
+}
+
 const courseSearch =
     document.getElementById("courseSearch");
 
@@ -29,8 +57,15 @@ const professorSuggestions =
 
 
 async function initialize() {
-    // Process redirect response (if we just came back from Microsoft)
-    const response = await msalInstance.handleRedirectPromise();
+    let response = null;
+    try {
+        response = await msalInstance.handleRedirectPromise();
+    } catch (err) {
+        console.error("MSAL redirect handling failed:", err);
+        document.getElementById("status").textContent =
+            "Sign-in failed (" + (err.errorCode || err.message || "unknown error") + "). Please try again.";
+        return;
+    }
 
     if (response) {
         msalInstance.setActiveAccount(response.account);
@@ -48,14 +83,22 @@ async function initialize() {
 
     // If we already have a fresh ID token from the redirect,
     // reuse it. Otherwise silently obtain one.
-    const idToken = response
-        ? response.idToken
-        : (
-            await msalInstance.acquireTokenSilent({
-                account,
-                scopes: ["openid", "profile", "email"],
-            })
-        ).idToken;
+    let idToken;
+    try {
+        idToken = response
+            ? response.idToken
+            : (
+                await msalInstance.acquireTokenSilent({
+                    account,
+                    scopes: ["openid", "profile", "email"],
+                })
+            ).idToken;
+    } catch (err) {
+        console.error("Failed to acquire token:", err);
+        document.getElementById("status").textContent =
+            "Your session expired. Please sign in again.";
+        return;
+    }
 
     await initializeProtectedContent(idToken);
 
@@ -197,6 +240,16 @@ async function loadReviews(idToken) {
     renderReviews(data.reviews);
 }
 
+function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+    })[ch]);
+}
+
 function renderReviews(reviews) {
     const container = document.getElementById("reviews");
 
@@ -213,22 +266,22 @@ function renderReviews(reviews) {
         card.className = "review-card";
 
         card.innerHTML = `
-            <h3>${review.course}</h3>
+            <h3>${escapeHtml(review.course)}</h3>
 
-            <p><strong>Professor:</strong> ${review.professor}</p>
-            <p><strong>Year:</strong> ${review.year}</p>
-            <p><strong>Term:</strong> ${review.term}</p>
+            <p><strong>Professor:</strong> ${escapeHtml(review.professor)}</p>
+            <p><strong>Year:</strong> ${escapeHtml(review.year)}</p>
+            <p><strong>Term:</strong> ${escapeHtml(review.term)}</p>
 
             <p><strong>Course Review</strong></p>
-            <p>${review.courseReview}</p>
+            <p>${escapeHtml(review.courseReview)}</p>
 
             <p><strong>Professor Review</strong></p>
-            <p>${review.professorReview}</p>
+            <p>${escapeHtml(review.professorReview)}</p>
 
             <p>
-                Recommendation: ${review.recommendation}/5<br>
-                Difficulty: ${review.difficulty}/5<br>
-                Leniency: ${review.leniency}/5
+                Recommendation: ${escapeHtml(review.recommendation)}/5<br>
+                Difficulty: ${escapeHtml(review.difficulty)}/5<br>
+                Leniency: ${escapeHtml(review.leniency)}/5
             </p>
         `;
 
@@ -262,7 +315,13 @@ loginBtn.addEventListener("click", async () => {
     await msalInstance.loginRedirect(loginRequest);
 });
 
-initialize().catch(console.error);
+initialize().catch((err) => {
+    console.error("Unexpected error during sign-in:", err);
+    const status = document.getElementById("status");
+    if (status) {
+        status.textContent = "Something went wrong during sign-in. Please refresh and try again.";
+    }
+});
 
 function setupAutocomplete(
     searchInput,
@@ -297,12 +356,11 @@ function setupAutocomplete(
         }
 
         const matches = items
-            .filter(item =>
-                item.name
-                    .toLowerCase()
-                    .includes(query)
-            )
-            .slice(0, 8);
+            .map(item => ({ item, score: fuzzyScore(query, item.name) }))
+            .filter(m => m.score >= 0)
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 8)
+            .map(m => m.item);
 
         if (matches.length === 0) {
             const empty = document.createElement("div");

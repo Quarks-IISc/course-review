@@ -97,10 +97,7 @@ permalink: /
 
   <script src="{{ site.quarks_url }}/assets/js/carousel-logic.js"></script>
   <script>
-    // Same carousel as crosswords.html on the blog, but this repo's own
-    // Jekyll build has no site.posts to loop over (no _posts collection
-    // here) — so the cards are fetched live from the blog's featured.json
-    // instead of being rendered server-side with Liquid.
+    // Cards fetched from the blog's featured.json (no site.posts here).
     (function () {
       const QUARKS_URL = "{{ site.quarks_url }}";
       const track = document.getElementById("featured-carousel-track");
@@ -165,13 +162,9 @@ permalink: /
   </script>
 </section>
 
-<script type="module" src="{{ site.baseurl }}/app.js"></script>
+<script type="module" src="{{ site.baseurl }}/src/app.js"></script>
 <script>
-  // app.js only toggles `hidden` on #protected-content and writes status
-  // text (sign-in prompt, access-denied, load errors) into #status, with
-  // no class hook for any of it. Keep the sign-in box in sync: hide it
-  // once content is showing, but bring it back if a status message shows
-  // up later (e.g. access denied after sign-in) so that message is seen.
+  // Keep the sign-in box in sync with #protected-content and #status.
   document.addEventListener("DOMContentLoaded", () => {
     const loginPanel = document.getElementById("login-panel");
     const protectedContent = document.getElementById("protected-content");

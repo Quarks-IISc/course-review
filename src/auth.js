@@ -4,7 +4,8 @@ const msalConfig = {
     auth: {
         clientId: "2b7a3439-67d5-4cb0-b8d1-a244078196e3",
         authority: "https://login.microsoftonline.com/common",
-        redirectUri: "https://quarks.ug.iisc.ac.in/course-review/"
+        // Must exactly match a redirect URI registered in Entra (localhost included).
+        redirectUri: window.location.origin + window.location.pathname
     }
 };
 
